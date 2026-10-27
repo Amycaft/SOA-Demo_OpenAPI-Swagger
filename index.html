@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP API Client Demo</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 20px;
+            background: #f4f6f9;
+            color: #222;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 18px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #0001;
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 6px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea,
+        button {
+            width: 100%;
+            padding: 10px;
+            font: inherit;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        textarea {
+            min-height: 130px;
+            font-family: monospace;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 15px;
+            background: #1769e0;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1054b8;
+        }
+
+        button:disabled {
+            background: #888;
+            cursor: wait;
+        }
+
+        pre {
+            background: #171923;
+            color: #d7f7d7;
+            padding: 15px;
+            border-radius: 6px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            min-height: 100px;
+        }
+
+        .hint {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>PHP API Client Demo</h1>
+
+    <p class="hint">
+        Giao diện web dùng để gửi request đến PHP API
+        và hiển thị kết quả trả về.
+    </p>
+
+    <div class="card">
+        <h2>Request</h2>
+
+        <label for="baseUrl">API Base URL</label>
+        <input id="baseUrl" type="url" value="http://localhost:8000" placeholder="http://localhost:8000">
+
+        <label for="method">HTTP Method</label>
+        <select id="method">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="PATCH">PATCH</option>
+            <option value="DELETE">DELETE</option>
+        </select>
+
+        <label for="endpoint">Endpoint Path</label>
+        <input id="endpoint" type="text" value="/" placeholder="/api/users">
+
+        <label for="body">Request Body (JSON)</label>
+        <textarea id="body">{
+    "name": "Demo User"
+}</textarea>
+
+        <button id="sendBtn" type="button" onclick="sendRequest()">
+            Send Request
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>Response</h2>
+        <p id="status">Chưa gửi request.</p>
+        <pre id="result">Kết quả sẽ hiển thị ở đây.</pre>
+    </div>
+
+    <script>
+        async function sendRequest() {
+            const baseUrl = document
+                .getElementById("baseUrl")
+                .value.trim();
+
+            const endpoint = document
+                .getElementById("endpoint")
+                .value.trim();
+
+            const method = document
+                .getElementById("method")
+                .value;
+
+            const bodyText = document
+                .getElementById("body")
+                .value;
+
+            const result = document.getElementById("result");
+            const status = document.getElementById("status");
+            const button = document.getElementById("sendBtn");
+
+            try {
+                if (!baseUrl) {
+                    throw new Error("Vui long nhap API Base URL.");
+                }
+
+                const url = new URL(
+                    endpoint.replace(/^\/+/, ""),
+                    baseUrl.replace(/\/+$/, "") + "/"
+                );
+
+                const options = {
+                    method: method,
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                };
+
+                if (["POST", "PUT", "PATCH"].includes(method)
+                    && bodyText.trim()) {
+                    JSON.parse(bodyText);
+
+                    options.headers["Content-Type"] =
+                        "application/json";
+
+                    options.body = bodyText;
+                }
+
+                button.disabled = true;
+                status.textContent = "Đang gửi request...";
+                result.textContent = "";
+
+                const response = await fetch(url, options);
+                const responseText = await response.text();
+
+                let output = responseText;
+
+                try {
+                    output = JSON.stringify(
+                        JSON.parse(responseText),
+                        null,
+                        2
+                    );
+                } catch (error) {
+                    // Giữ nguyên nếu response không phải JSON.
+                }
+
+                status.textContent =
+                    "HTTP " + response.status + " " +
+                    response.statusText;
+
+                result.textContent = output || "(Response rỗng)";
+            } catch (error) {
+                status.textContent = "Request thất bại";
+                result.textContent = error.message;
+            } finally {
+                button.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>

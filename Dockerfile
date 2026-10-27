@@ -1,0 +1,9 @@
+FROM php:8.3-apache
+
+RUN docker-php-ext-install mysqli pdo_mysql \
+    && a2enmod rewrite \
+    && sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+
+COPY ./src/ /var/www/html/
+
+EXPOSE 80

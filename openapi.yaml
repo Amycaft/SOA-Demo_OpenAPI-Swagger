@@ -1,0 +1,116 @@
+openapi: 3.0.3
+
+info:
+  title: Student Management API
+  description: REST API quan ly sinh vien bang PHP va MySQL
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /api/students:
+    get:
+      summary: Lay danh sach sinh vien
+      responses:
+        "200":
+          description: Danh sach sinh vien
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Student"
+
+    post:
+      summary: Them sinh vien
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentInput"
+      responses:
+        "201":
+          description: Them sinh vien thanh cong
+        "409":
+          description: Ma sinh vien da ton tai
+        "422":
+          description: Thong tin khong hop le
+
+  /api/students/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID sinh vien trong database
+
+    get:
+      summary: Lay thong tin mot sinh vien
+      responses:
+        "200":
+          description: Tim thay sinh vien
+        "404":
+          description: Khong tim thay sinh vien
+
+    put:
+      summary: Cap nhat sinh vien
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentInput"
+      responses:
+        "200":
+          description: Cap nhat thanh cong
+        "404":
+          description: Khong tim thay sinh vien
+
+    delete:
+      summary: Xoa sinh vien
+      responses:
+        "200":
+          description: Xoa thanh cong
+        "404":
+          description: Khong tim thay sinh vien
+
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        student_id:
+          type: string
+          example: SV001
+        fullname:
+          type: string
+          example: Nguyen Van A
+        classroom:
+          type: string
+          example: CTK45
+
+    StudentInput:
+      type: object
+      required:
+        - student_id
+        - fullname
+        - classroom
+      properties:
+        student_id:
+          type: string
+          example: SV002
+        fullname:
+          type: string
+          example: Tran Thi B
+        classroom:
+          type: string
+          example: CTK46
