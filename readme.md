@@ -34,8 +34,6 @@ Mở file `Source/openapi.yaml`, sao chép toàn bộ nội dung file.
 - Thay thế nội dung bên trái bằng nội dung đã sao chép từ `openapi.yaml`.
 - Kiểm tra tài liệu API được hiển thị ở bên phải.
 
-![OpenAPI YAML](images/2.png)
-
 ## 4. Triển khai Swagger UI bằng Docker
 
 Mở Docker Desktop, sau đó mở PowerShell tại thư mục chứa file `docker-compose.yml` và chạy:
@@ -49,6 +47,8 @@ docker compose up -d --build
 Mở trình duyệt và truy cập:
 
 **http://localhost:8081**
+
+![OpenAPI YAML](images/2.png)
 
 ## 6. Generate API Client
 
