@@ -26,7 +26,7 @@ Di chuyển vào thư mục mã nguồn vừa tải về.
 
 Mở file `Source/openapi.yaml`, sao chép toàn bộ nội dung file.
 
-![OpenAPI YAML](images/openapi.png)
+![OpenAPI YAML](images/1.png)
 
 ## 3. Sử dụng Swagger Editor
 
