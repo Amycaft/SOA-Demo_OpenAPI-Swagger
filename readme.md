@@ -4,7 +4,7 @@
 **Môn:** Kiến Trúc Hướng Dịch Vụ
 
 **Link:**
-- **Git:** (link git)
+- **Git:** https://github.com/Amycaft/SOA-Demo_OpenAPI-Swagger.git
 - **Slides:** https://canva.link/140udzdiprve3ki
 
 ## Yêu cầu
@@ -17,7 +17,7 @@
 Mở CMD và chạy lệnh:
 
 ```bash
-git clone (link git)
+git clone https://github.com/Amycaft/SOA-Demo_OpenAPI-Swagger.git
 ```
 
 Di chuyển vào thư mục mã nguồn vừa tải về.
@@ -33,6 +33,8 @@ Mở file `Source/openapi.yaml`, sao chép toàn bộ nội dung file.
 - Truy cập https://editor.swagger.io/
 - Thay thế nội dung bên trái bằng nội dung đã sao chép từ `openapi.yaml`.
 - Kiểm tra tài liệu API được hiển thị ở bên phải.
+
+![OpenAPI YAML](images/2.png)
 
 ## 4. Triển khai Swagger UI bằng Docker
 
